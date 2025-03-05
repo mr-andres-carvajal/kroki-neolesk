@@ -1,0 +1,23 @@
+services:
+  kroki:
+    image: yuzutech/kroki
+    depends_on:
+      - mermaid
+    environment:
+      - KROKI_MERMAID_HOST=mermaid
+    ports:
+      - "8000:8000"
+  mermaid:
+    image: yuzutech/kroki-mermaid
+    expose:
+      - "8002"
+  niolesk:
+    image: "ghcr.io/webgiss/niolesk"
+    depends_on:
+      - kroki
+    ports:
+      - "8017:80"
+    hostname: "niolesk"
+    restart: "always"
+    environment:
+      - "NIOLESK_KROKI_ENGINE=http://localhost:8000"
